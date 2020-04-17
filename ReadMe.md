@@ -21,6 +21,7 @@ The code of mcloss is integrated into a class.
 - Trained from scratch:
   - Init_lr: 0.05 for all
   - lr_scheduler: MultiStepLR
+  
 | Model |cnums|cgroups|p|alpha|img_size|feat_dim|Acc@1|
 | ----| ---------- | ---------- | ---------- | ---------- | ---------- | ---------- | ---------- |
 |VGG16|[3]|[200]|0.5|1.5| 256->224 |600\*7\*7|67.4|
