@@ -25,6 +25,7 @@ The code of mcloss is integrated into a class.
 | Model |cnums|cgroups|p|alpha|img_size|feat_dim|Acc@1|
 | ----| ---------- | ---------- | ---------- | ---------- | ---------- | ---------- | ---------- |
 |VGG16|[3]|[200]|0.5|1.5| 256->224 |600\*7\*7|67.4|
+|VGG16|[5]|[200]|0.5|1.5| 256->224 |1000\*7\*7|66.4|
 - Using Imagenet pretrained model
   - Init_lr: 0.005 for conv layers, 0.05 for dense layers
   - lr_scheduler: StepLR
