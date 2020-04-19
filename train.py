@@ -22,13 +22,13 @@ parser.add_argument('--feat_dim', default=600 * 7 * 7, type=int)
 parser.add_argument('--savepath', default='./Test/', type=str)
 parser.add_argument('--eps', default=3, type=int)
 parser.add_argument('--num_classes', default=200, type=int)
-parser.add_argument('--lr', default=0.05, type=float)
+parser.add_argument('--lr', default=0.1, type=float)
 parser.add_argument('--weight_decay', default=5e-4, type=float)
 parser.add_argument('--momentum', default=0.9, type=float)
 parser.add_argument('--scheduler', default='multi', type=str)
 parser.add_argument('--lr_step', default=30, type=int)
-parser.add_argument('--lr_gamma', default=0.6, type=float)
-parser.add_argument('--total_epoch', default=150, type=int)
+parser.add_argument('--lr_gamma', default=0.1, type=float)
+parser.add_argument('--total_epoch', default=300, type=int)
 parser.add_argument('--batch_size', default=32, type=int)
 parser.add_argument('--num_workers', default=4, type=int)
 parser.add_argument('--inp_size', default=224, type=int)
@@ -228,7 +228,7 @@ if __name__ == '__main__':
     if args.scheduler == 'step':
         scheduler = lr_scheduler.StepLR(optimizer, step_size=args.lr_step, gamma=args.lr_gamma, last_epoch=-1)
     elif args.scheduler == 'multi':
-        scheduler = lr_scheduler.MultiStepLR(optimizer, milestones=[90, 120], gamma=args.lr_gamma, last_epoch=-1)
+        scheduler = lr_scheduler.MultiStepLR(optimizer, milestones=[150, 225], gamma=args.lr_gamma, last_epoch=-1)
 
     # savepath
     savepath = os.path.join(args.savepath, args.model_name)
@@ -239,6 +239,9 @@ if __name__ == '__main__':
 
     if args.seed is not None:
         savepath = savepath + '_s' + str(args.seed)
+
+    if not args.pretrained:
+        savepath = savepath + '_' + str(args.eps)
 
     print('savepath:', savepath)
 
@@ -277,8 +280,3 @@ if __name__ == '__main__':
     print('best_acc:', best_acc)
     with open(os.path.join(savepath, 'log.txt'), 'a+')as f:
         f.write('# best_acc:{:.4f}, best_epoch:{}'.format(best_acc, best_epoch))
-
-
-
-
-
