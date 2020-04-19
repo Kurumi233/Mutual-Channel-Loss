@@ -32,28 +32,37 @@ class DataSet(dataset.Dataset):
         else:
             self.loader = default_loader
 
-        mean = [0.485, 0.456, 0.406]
-        std = [0.229, 0.224, 0.225]
-
         if size == 224:
-            bigsize = 256
+            if mode == 'train':
+                self.transform = transforms.Compose([
+                    transforms.Resize((224, 224)),
+                    transforms.RandomCrop(224, padding=4),
+                    transforms.RandomHorizontalFlip(),
+                    transforms.ToTensor(),
+                    transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])
+                ])
+            else:
+                self.transform = transforms.Compose([
+                    transforms.Resize((224, 224)),
+                    transforms.ToTensor(),
+                    transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5]),
+                ])
         else:
-            bigsize = 600
-        if mode == 'train':
-            self.transform = transforms.Compose([
-                transforms.Resize((bigsize, bigsize)),
-                transforms.RandomCrop((size, size)),
-                transforms.RandomHorizontalFlip(),
-                transforms.ToTensor(),
-                transforms.Normalize(mean, std)
-            ])
-        else:
-            self.transform = transforms.Compose([
-                transforms.Resize((bigsize, bigsize)),
-                transforms.CenterCrop((size, size)),
-                transforms.ToTensor(),
-                transforms.Normalize(mean, std)
-            ])
+            if mode == 'train':
+                self.transform = transforms.Compose([
+                    transforms.Resize((600, 600)),
+                    transforms.RandomCrop((size, size)),
+                    transforms.RandomHorizontalFlip(),
+                    transforms.ToTensor(),
+                    transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+                ])
+            else:
+                self.transform = transforms.Compose([
+                    transforms.Resize((600, 600)),
+                    transforms.CenterCrop((size, size)),
+                    transforms.ToTensor(),
+                    transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+                ])
 
     def __getitem__(self, index):
         img_path = self.imgs[index]
@@ -65,36 +74,4 @@ class DataSet(dataset.Dataset):
 
     def __len__(self):
         return len(self.labels)
-
-
-def visulize(tensor, title=None):
-    """
-    :param tensor: a batch input images, shape (n, c, h, w)
-    :param title: show labels or title or None
-    """
-    img = torchvision.utils.make_grid(tensor)
-    img = img.numpy().transpose((1, 2, 0))
-    mean = np.array([0.485, 0.456, 0.406])
-    std = np.array([0.229, 0.224, 0.225])
-    img = std * img + mean
-    img = np.clip(img, 0, 1)
-    plt.imshow(img)
-    if title is not None:
-        plt.title(title)
-    plt.show()
-
-
-if __name__ == '__main__':
-    set = DataSet('test')
-    loader = DataLoader(set, batch_size=16, shuffle=False)
-
-    data, labels = iter(loader).__next__()
-    visulize(data, [x for x in labels])
-
-
-
-
-
-
-
 
