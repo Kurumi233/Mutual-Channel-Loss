@@ -19,26 +19,28 @@ The code of mcloss is integrated into a class.
 
 - The experiment is conduct with 2 RTX 2080Ti GPUs, and the batchsize is set to 32.
 - Trained from scratch:
-  - Init_lr: 0.05 for all
-  - lr_scheduler: MultiStepLR
+  - Init_lr: 0.1 for all
+  - lr_scheduler: MultiStepLR (total-300, milestones-[150, 225], lr_gamma-0.1)
   
 | Model |cnums|cgroups|p|alpha|img_size|feat_dim|Acc@1|
 | ----| ---------- | ---------- | ---------- | ---------- | ---------- | ---------- | ---------- |
-|VGG16|[3]|[200]|0.5|1.5| 256->224 |600\*7\*7|67.4|
-|VGG16|[5]|[200]|0.5|1.5| 256->224 |1000\*7\*7|66.4|
+|VGG16|[3]|[200]|0.5|1.5| 224->224 |600\*7\*7|64.88|
+|VGG16|[3]|[200]|0.5|2.0| 224->224 |600\*7\*7|66.66|
 - Using Imagenet pretrained model
   - Init_lr: 0.005 for conv layers, 0.05 for dense layers
-  - lr_scheduler: StepLR
+  - lr_scheduler: StepLR (total-150, lr_step-30, lr_gamma-0.8)
 
 | Model |cnums|cgroups|p|alpha|img_size|feat_dim|Acc@1|
 | ----| ---------- | ---------- | ---------- | ---------- | ---------- | ---------- | ---------- |
-| ResNet50  |[10, 11]|[152, 48]|0.4|0.0005| 600->448 | 2048 |86.9|
+| ResNet50  |[10, 11]|[152, 48]|0.4|0.0005| 600->448 | 2048 |86.93|
+
+PS: the results maybe influenced by random initial, using batch size 64 can be closer to the results of the paper.
 
 #### Reference:
 
 - The Devil is in the Channels: Mutual-Channel Loss for Fine-Grained Image Classification (TIP 2020) [DOI](https://doi.org/10.1109/TIP.2020.2973812)
 
-- https://github.com/dongliangchang/Mutual-Channel-Loss
+- Official code: https://github.com/dongliangchang/Mutual-Channel-Loss
 
 
 
