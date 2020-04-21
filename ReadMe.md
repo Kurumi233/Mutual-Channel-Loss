@@ -21,11 +21,12 @@ The code of mcloss is integrated into a class.
 - Trained from scratch:
   - Init_lr: 0.1 for all
   - lr_scheduler: MultiStepLR (total-300, milestones-[150, 225], lr_gamma-0.1)
+  - random seed: 8
   
 | Model |cnums|cgroups|p|alpha|img_size|feat_dim|Acc@1|
 | ----| ---------- | ---------- | ---------- | ---------- | ---------- | ---------- | ---------- |
-|VGG16|[3]|[200]|0.5|1.5| 224->224 |600\*7\*7|64.88|
-|VGG16|[3]|[200]|0.5|2.0| 224->224 |600\*7\*7|66.66|
+|VGG16|[3]|[200]|0.5|1.5| 224->224 |600\*7\*7|66.17|
+|VGG16|[3]|[200]|0.5|2.0| 224->224 |600\*7\*7|66.03|
 - Using Imagenet pretrained model
   - Init_lr: 0.005 for conv layers, 0.05 for dense layers
   - lr_scheduler: StepLR (total-150, lr_step-30, lr_gamma-0.8)
