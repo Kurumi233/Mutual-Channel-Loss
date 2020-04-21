@@ -4,7 +4,7 @@ from torchvision import models
 
 
 class BaseModel_scratch(nn.Module):
-    def __init__(self, model_name, eps=3, num_classes=200):
+    def __init__(self, model_name, eps=3, num_classes=200, init_weights=True):
         super().__init__()
         if model_name == 'vgg16bn':
             backbone = nn.Sequential(*list(models.vgg16_bn(pretrained=False).features.children())[:-4])
@@ -22,6 +22,9 @@ class BaseModel_scratch(nn.Module):
         self.last_conv = last_conv
 
         self.maxpool = nn.MaxPool2d(kernel_size=2, stride=2)
+        
+        if init_weights:
+            self._initialize_weights()
 
     def forward(self, x):
         feat = self.backbone(x)
@@ -31,6 +34,19 @@ class BaseModel_scratch(nn.Module):
         out = out.view(out.size(0), -1)
 
         return feat, out
+
+    def _initialize_weights(self):
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+                if m.bias is not None:
+                    nn.init.constant_(m.bias, 0)
+            elif isinstance(m, nn.BatchNorm2d):
+                nn.init.constant_(m.weight, 1)
+                nn.init.constant_(m.bias, 0)
+            elif isinstance(m, nn.Linear):
+                nn.init.normal_(m.weight, 0, 0.01)
+                nn.init.constant_(m.bias, 0)
 
 
 if __name__ == '__main__':
