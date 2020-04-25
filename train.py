@@ -36,14 +36,14 @@ parser.add_argument('--seed', default=None, type=int)
 parser.add_argument('--gpu', default=0, type=str)
 # parser.add_argument('--alpha', default=0.0005, type=float)
 parser.add_argument('--alpha', default=1.5, type=float)
+parser.add_argument('--lambda_', default=10, type=float)
+parser.add_argument('--p', default=0.5, type=float)
 parser.add_argument('--multi-gpus', default=1, type=int)
 parser.add_argument('--pretrained', default=0, type=str)
 args = parser.parse_args()
 
 cnums = [3]
 cgroups = [200]
-p = 0.5
-lambda_ = 10
 
 
 def train():
