@@ -176,7 +176,7 @@ if __name__ == '__main__':
     # loss
     if args.loss == 'celoss':
         criterion = torch.nn.CrossEntropyLoss()
-    mcloss = MCLoss(num_classes=args.num_classes, cnums=cnums, cgroups=cgroups, p=p, lambda_=lambda_)
+    mcloss = MCLoss(num_classes=args.num_classes, cnums=cnums, cgroups=cgroups, p=args.p, lambda_=args.lambda_)
 
     # dataloader
     pin_memory = True if args.num_workers != 0 else False
